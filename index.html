@@ -1,0 +1,51 @@
+<html>
+    <head>
+        <title>GChart Test</title>
+    </head>
+    <body>
+        <div id="myChart"></div>
+    </body>
+    <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+    <script type="text/javascript" src="GChart.js"></script>
+    <script type="text/javascript">
+        GChart.onLoad(function() {
+            var myChart = new GChart('myChart', 'BarChart');
+            myChart.addColumn('string', 'Year');
+            myChart.addColumn('number', 'Sales');
+            myChart.addColumn({type:'string',role:'tooltip'});
+            myChart.addRows([
+                {
+                    title:'2010',
+                    value:600,
+                    tooltip:'$600K in our first year!'
+                },
+                {
+                    title:'2011',
+                    value:1500,
+                    tooltip:'Sunspot activity made this our best year ever!'
+                },
+                {
+                    title:'2012',
+                    value:800,
+                    tooltip:'$800 in 2012.'
+                },
+                {
+                    title:'2013',
+                    value:1000,
+                    tooltip:'$1M in sales last year!'
+                }
+            ]);
+            myChart.addOption('animation', {
+                'duration': 750,
+                'startup': true,
+                'easing': 'out'
+            });
+            myChart.draw();
+
+            setTimeout(function() {
+                myChart.addRow({title:'2015', value:1700, tooltip:'$1500 in 2015'});
+                // console.log(myChart.getRowTextElements());
+            }, 1000);
+        });
+    </script>
+</html>
