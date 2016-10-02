@@ -1,51 +1,74 @@
+<!DOCTYPE html>
 <html>
     <head>
         <title>GChart Test</title>
     </head>
     <body>
         <div id="myChart"></div>
-    </body>
-    <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
-    <script type="text/javascript" src="GChart.js"></script>
-    <script type="text/javascript">
-        GChart.onLoad(function() {
-            var myChart = new GChart('myChart', 'BarChart');
-            myChart.addColumn('string', 'Year');
-            myChart.addColumn('number', 'Sales');
-            myChart.addColumn({type:'string',role:'tooltip'});
-            myChart.addRows([
-                {
-                    title:'2010',
-                    value:600,
-                    tooltip:'$600K in our first year!'
-                },
-                {
-                    title:'2011',
-                    value:1500,
-                    tooltip:'Sunspot activity made this our best year ever!'
-                },
-                {
-                    title:'2012',
-                    value:800,
-                    tooltip:'$800 in 2012.'
-                },
-                {
-                    title:'2013',
-                    value:1000,
-                    tooltip:'$1M in sales last year!'
-                }
-            ]);
-            myChart.addOption('animation', {
-                'duration': 750,
-                'startup': true,
-                'easing': 'out'
-            });
-            myChart.draw();
+        <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+        <script type="text/javascript" src="GChart.js"></script>
+        <script type="text/javascript">
+            var myChart = null;
+            GChart.onLoad(function() {
+                myChart = new GChart('myChart', 'BarChart');
+                myChart.addColumn('string', 'Year');
+                myChart.addColumn('number', 'Sales');
+                myChart.addColumn({type:'string',role:'tooltip'});
+                myChart.addColumn('number', 'Profits');
+                myChart.addColumn({type:'string',role:'tooltip'});
+                myChart.addColumn('number', 'Losses');
+                myChart.addColumn({type:'string',role:'tooltip'});
+                myChart.addRows([
+                    {
+                        title:'2010',
+                        values:[600, 700, 300],
+                        tooltips:['$600K in our first year!', 'Stacked!', 'Stacked again!'],
+                        titleUrl:'https://www.google.com/search?q=kittens&oq=kittens&aqs=chrome..69i57j0l5.1655j0j7&sourceid=chrome&ie=UTF-8'
+                    },
+                    {
+                        title:'2011',
+                        values:[1500, 400, 100],
+                        tooltips:['Sunspot activity made this our best year ever!', 'Stacked!', 'Stacked again!'],
+                        titleUrl:'https://www.google.com/search?q=puppies&oq=puppies&aqs=chrome.0.69i59j0l5.782j0j9&sourceid=chrome&ie=UTF-8'
+                    },
+                    {
+                        title:'2012',
+                        values:[800, 400, 100],
+                        tooltips:['$800 in 2012.', 'Stacked!', 'Stacked again!'],
+                        titleUrl:'https://www.google.com/search?q=birdies&oq=birdies&aqs=chrome..69i57j0l5.760j0j9&sourceid=chrome&ie=UTF-8'
+                    },
+                    {
+                        title:'2013',
+                        values:[1000, 400, 0],
+                        tooltips:['$1M in sales last year!', 'Stacked!', 'Stacked again!'],
+                        titleUrl:'https://www.google.com'
+                    }
+                ]);
+                myChart.addOptions({
+                    animation: {
+                        'duration': 750,
+                        'startup': true,
+                        'easing': 'out'
+                    },
+                    isStacked:true,
+                    'chartArea': {
+                        'height': '70%',
+                        'width': '80%'
+                    }
+                });
 
-            setTimeout(function() {
-                myChart.addRow({title:'2015', value:1700, tooltip:'$1500 in 2015'});
-                // console.log(myChart.getRowTextElements());
-            }, 1000);
-        });
-    </script>
+                myChart.draw();
+
+                /*setTimeout(function() {
+                    myChart.addRow({title:'2015', values:[1700, 1500, 0], tooltips:['$1500 in 2015', 'Stacked!', 'Stacked again!']});
+                    // console.log(myChart.getRowTextElements());
+                }, 2000);*/
+
+                setTimeout(function() {
+                    myChart.clear();
+                    myChart.fadeOut();
+                }, 2000);
+            });
+        </script>
+    </body>
 </html>
