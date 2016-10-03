@@ -173,7 +173,6 @@ GChart.prototype.draw = function() {
             }
 
             window.setTimeout(self.createRowTitleLinks(), 100);
-            console.log('animationfinish complete');
         });
     }
 
