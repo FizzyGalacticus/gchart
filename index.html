@@ -11,37 +11,38 @@
             var myChart = null;
             GChart.onLoad(function() {
                 myChart = new GChart('myChart', 'BarChart');
-                myChart.addColumn('string', 'Year');
-                myChart.addColumn('number', 'Sales');
-                myChart.addColumn({type:'string',role:'tooltip'});
-                myChart.addColumn('number', 'Profits');
-                myChart.addColumn({type:'string',role:'tooltip'});
-                myChart.addColumn('number', 'Losses');
-                myChart.addColumn({type:'string',role:'tooltip'});
+                myChart.addColumn({type:'string', title:'Year'});
+                myChart.addColumn({type:'number', title:'Sales', tooltip:true, annotation:true});
+                myChart.addColumn({type:'number', title:'Profits', tooltip:true});
+                myChart.addColumn({type:'number', title:'Losses', tooltip:true});
                 myChart.addRows([
                     {
                         title:'2010',
                         values:[600, 700, 300],
                         tooltips:['$600K in our first year!', 'Stacked!', 'Stacked again!'],
-                        titleUrl:'https://www.google.com/search?q=kittens&oq=kittens&aqs=chrome..69i57j0l5.1655j0j7&sourceid=chrome&ie=UTF-8'
+                        titleUrl:'https://www.google.com/search?q=kittens&oq=kittens&aqs=chrome..69i57j0l5.1655j0j7&sourceid=chrome&ie=UTF-8',
+                        annotations:['foo']
                     },
                     {
                         title:'2011',
                         values:[1500, 400, 100],
                         tooltips:['Sunspot activity made this our best year ever!', 'Stacked!', 'Stacked again!'],
-                        titleUrl:'https://www.google.com/search?q=puppies&oq=puppies&aqs=chrome.0.69i59j0l5.782j0j9&sourceid=chrome&ie=UTF-8'
+                        titleUrl:'https://www.google.com/search?q=puppies&oq=puppies&aqs=chrome.0.69i59j0l5.782j0j9&sourceid=chrome&ie=UTF-8',
+                        annotations:['foo']
                     },
                     {
                         title:'2012',
                         values:[800, 400, 100],
                         tooltips:['$800 in 2012.', 'Stacked!', 'Stacked again!'],
-                        titleUrl:'https://www.google.com/search?q=birdies&oq=birdies&aqs=chrome..69i57j0l5.760j0j9&sourceid=chrome&ie=UTF-8'
+                        titleUrl:'https://www.google.com/search?q=birdies&oq=birdies&aqs=chrome..69i57j0l5.760j0j9&sourceid=chrome&ie=UTF-8',
+                        annotations:['foo']
                     },
                     {
                         title:'2013',
                         values:[1000, 400, 0],
                         tooltips:['$1M in sales last year!', 'Stacked!', 'Stacked again!'],
-                        titleUrl:'https://www.google.com'
+                        titleUrl:'https://www.google.com',
+                        annotations:['foo']
                     }
                 ]);
                 myChart.addOptions({
@@ -64,10 +65,10 @@
                     // console.log(myChart.getRowTextElements());
                 }, 2000);*/
 
-                setTimeout(function() {
+                /*setTimeout(function() {
                     myChart.clear();
                     myChart.fadeOut();
-                }, 2000);
+                }, 2000);*/
             });
         </script>
     </body>

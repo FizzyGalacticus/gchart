@@ -1,12 +1,18 @@
+Array.prototype.insert = function(index, item) {
+    this.splice(index, 0, item);
+};
+
 GChart = function(divId, type) {
-    this.chart     = null;
-    this.divId     = divId;
-    this.chartType = type;
-    this.columns   = [];
-    this.rows      = [];
-    this.data      = null;
-    this.listeners = {};
-    this.options   = {
+    this.chart               = null;
+    this.divId               = divId;
+    this.chartType           = type;
+    this.columns             = [];
+    this.rows                = [];
+    this.tooltipPositions    = [];
+    this.annotationPositions = [];
+    this.data                = null;
+    this.listeners           = {};
+    this.options             = {
         tooltip:{isHtml:true},
         legend: {
             'position': 'top',
@@ -33,12 +39,8 @@ GChart.onLoad = function(callback) {
     });
 };
 
-GChart.prototype.addColumn = function(type, title) {
-    if(typeof type == 'string')
-        this.columns.push([type, title]);
-    else if(!title)
-        this.columns.push(type); //Is actually Options object
-    else throw 'Cannot determine column type.';
+GChart.prototype.addColumn = function(col) {
+    this.columns.push(col);
 };
 
 GChart.prototype.addRow = function(row) {
@@ -56,6 +58,60 @@ GChart.prototype.addRows = function(rows) {
 GChart.prototype.clear = function() {
     this.rows    = [];
     this.columns = [];
+};
+
+GChart.prototype.getColumnArray = function() {
+    var colArr               = [];
+    this.tooltipPositions    = [];
+    this.annotationPositions = [];   
+    for(var i = 0; i < this.columns.length; i++) {
+        var col = this.columns[i];
+        colArr.push(col.title || col.options);
+        if(col.tooltip) {
+            var tooltipIndex = (i+1);
+            tooltipIndex += this.tooltipPositions.length;
+            this.tooltipPositions.push(tooltipIndex);
+            colArr.push({role:'tooltip'});
+        }
+
+        if(col.annotation) {
+            var annotationIndex = (i+1);
+            annotationIndex += this.annotationPositions.length + this.tooltipPositions.length;
+            this.annotationPositions.push(annotationIndex);
+            colArr.push({role:'annotation'});
+        }
+    }
+
+    return colArr;
+};
+
+GChart.prototype.getRowArray = function(rowIndex) {
+    var row = this.rows[rowIndex];
+    var rowArr = [row.title];
+
+    for(var i = 0; i < row.values.length; i++) {
+        var value = row.values[i];
+        rowArr.push(value);
+    }
+
+    for(var i = 0; i < this.tooltipPositions.length; i++) {
+        rowArr.insert(this.tooltipPositions[i], row.tooltips[i]);
+    }
+
+    for(var i = 0; i < this.annotationPositions.length; i++) {
+        rowArr.insert(this.annotationPositions[i], row.annotations[i]);
+    }
+
+    return rowArr;
+};
+
+GChart.prototype.getRowsArray = function() {
+    var rowsArr = [];
+    for(var i = 0; i < this.rows.length; i++) {
+        rowsArr.push(this.getRowArray(i));
+    }
+
+    return rowsArr;
 };
 
 GChart.prototype.fadeOut = function() {
@@ -140,25 +196,11 @@ GChart.prototype.createRowTitleLinks = function() {
 
 GChart.prototype.draw = function() {
     var self  = this;
-    this.data = new google.visualization.DataTable();
+    var colArr = this.getColumnArray();
+    var rowsArr = this.getRowsArray();
+    rowsArr.unshift(colArr);
 
-    for(var i = 0; i < this.columns.length; i++) {
-        if(Array.isArray(this.columns[i]))
-            this.data.addColumn(this.columns[i][0], this.columns[i][1]);
-        else this.data.addColumn(this.columns[i]);
-    }
-
-    for(var j = 0; j < this.rows.length; j++) {
-        var row     = this.rows[j];
-        var tempArr = [row.title];
-        for(var k = 0; k < row.values.length; k++) {
-            tempArr.push(row.values[k]);
-            if(row.tooltips)
-                tempArr.push(row.tooltips[k]);
-        }
-
-        this.data.addRow(tempArr);
-    }
+    this.data = new google.visualization.arrayToDataTable(rowsArr);
 
     if(this.chartType == 'BarChart' || this.chartType == 'ColumnChart') {
         this.addListener('animationfinish', function() {
