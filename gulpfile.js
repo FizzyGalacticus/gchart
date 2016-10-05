@@ -5,14 +5,14 @@ var exec = require('child_process').exec,
     htmlmin = require('gulp-htmlmin');
 
 gulp.task('scripts', function() {
-    gulp.src(['bower_components/**/*.js', 'js/**/*.js'])
+    gulp.src(['bower_components/**/*.js', 'app/js/**/*.js'])
     .pipe(concat('gchart.min.js'))
     .pipe(uglify())
     .pipe(gulp.dest('dist/js'));
 });
 
 gulp.task('min-index', function() {
-    gulp.src('test/index.html')
+    gulp.src('app/index.html')
     .pipe(htmlmin({
         collapseWhitespace: true,
         minifyCSS: true,
@@ -27,7 +27,7 @@ gulp.task('min-index', function() {
 });
 
 gulp.task('watch', function() {
-    gulp.watch(['js/**/*.js', 'test/index.html'], ['scripts', 'min-index']);
+    gulp.watch(['app/js/**/*.js', 'app/index.html'], ['scripts', 'min-index']);
 });
 
 gulp.task('default', ['scripts', 'min-index', 'watch']);
