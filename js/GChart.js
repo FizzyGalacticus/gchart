@@ -20,6 +20,7 @@ GChart = function(divId, type) {
         }
     };
     this.beenDrawn = false;
+    this.loaded    = false;
     var self       = this;
     
     this.chart = new google.visualization[this.chartType](document.getElementById(this.divId));
@@ -30,13 +31,18 @@ GChart = function(divId, type) {
 };
 
 GChart.onLoad = function(callback) {
-    google.charts.load('current', {
-        packages: ['corechart']
-    });
-    google.charts.setOnLoadCallback(function() {
-        if(callback)
-            callback();
-    });
+    if(!this.loaded) {
+        var self = this;
+        google.charts.load('current', {
+            packages: ['corechart']
+        });
+        google.charts.setOnLoadCallback(function() {
+            self.loaded = true;
+            if(callback)
+                callback();
+        });
+    }
+    else if(callback) callback();
 };
 
 GChart.prototype.addColumn = function(col) {
