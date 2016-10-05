@@ -13,7 +13,16 @@ gulp.task('scripts', function() {
 
 gulp.task('min-index', function() {
     gulp.src('test/index.html')
-    .pipe(htmlmin({collapseWhitespace: true}))
+    .pipe(htmlmin({
+        collapseWhitespace: true,
+        minifyCSS: true,
+        minifyJS: true,
+        minifyURLs: true,
+        useShortDoctype: true,
+        removeRedundantAttributes: true,
+        removeComments: true,
+        removeAttributeQuotes: true
+    }))
     .pipe(gulp.dest('dist'));
 });
 
