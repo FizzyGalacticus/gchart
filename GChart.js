@@ -165,7 +165,11 @@ GChart.prototype.getRowTitleElements = function() {
     for(var i = 0; i < temp.length; i++)
         textDivs.push(temp[i]);
 
-    return textDivs.slice(textDivs.length-this.rows.length, textDivs.length);
+    var startingIndex = textDivs.length - this.rows.length;
+    if(this.annotationPositions.length > 0)
+        startingIndex -= (this.annotationPositions.length * this.rows.length);
+
+    return textDivs.slice(startingIndex, startingIndex + this.rows.length);
 };
 
 GChart.prototype.createRowTitleLinks = function() {
@@ -214,7 +218,7 @@ GChart.prototype.draw = function() {
                 }
             }
 
-            window.setTimeout(self.createRowTitleLinks(), 100);
+            window.setTimeout(self.createRowTitleLinks(), 50);
         });
     }
 
