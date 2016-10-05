@@ -1,0 +1,25 @@
+{
+  "name": "gchart",
+  "authors": [
+    "Dustin L. Dodson <dustinleedodson@gmail.com>"
+  ],
+  "description": "Google Charts Wrapper",
+  "main": "js/GChart.js",
+  "keywords": [
+    "Google",
+    "Chart",
+    "GChart"
+  ],
+  "license": "Apache 2.0",
+  "homepage": "",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "loader": "https://www.gstatic.com/charts/loader.js"
+  }
+}

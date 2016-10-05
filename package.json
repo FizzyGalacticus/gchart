@@ -1,0 +1,28 @@
+{
+  "name": "gchart",
+  "version": "1.0.0",
+  "description": "GChart wrapper for creating charts easier, and with some additional features.",
+  "main": "dist/js/gchart.min.js",
+  "directories": {
+    "test": "test"
+  },
+  "dependencies": {
+    "gulp-concat": "^2.6.0",
+    "gulp-uglify": "^2.0.0"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "dustin@dustindodson.ninja:gitroot/gchart"
+  },
+  "keywords": [
+    "Google",
+    "Chart",
+    "GChart"
+  ],
+  "author": "Dustin L. Dodson",
+  "license": "Apache-2.0"
+}
