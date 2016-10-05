@@ -7,9 +7,8 @@
         <div id="myChart"></div>
         <script type="text/javascript" src="js/gchart.min.js"></script>
         <script type="text/javascript">
-            var myChart = null;
             GChart.onLoad(function() {
-                myChart = new GChart('myChart', 'BarChart');
+                var myChart = new GChart('myChart', 'BarChart');
                 myChart.addColumn({type:'string', title:'Year'});
                 myChart.addColumn({type:'number', title:'Sales', tooltip:true, annotation:true});
                 myChart.addColumn({type:'number', title:'Profits', tooltip:true});
@@ -61,20 +60,27 @@
                     'chartArea': {
                         'height': '70%',
                         'width': '80%'
+                    },
+                    'bar': {
+                        'groupWidth': '90%'
+                    },
+                    'legend': {
+                        'position': 'top',
+                        'maxLines': 2
                     }
                 });
 
                 myChart.draw();
 
-                /*setTimeout(function() {
-                    myChart.addRow({title:'2015', values:[1700, 1500, 0], tooltips:['$1500 in 2015', 'Stacked!', 'Stacked again!']});
-                    // console.log(myChart.getRowTextElements());
-                }, 2000);*/
-
-                /*setTimeout(function() {
-                    myChart.clear();
-                    myChart.fadeOut();
-                }, 2000);*/
+                setTimeout(function() {
+                    myChart.addRow({
+                        title:'2015',
+                        values:[1350, 962, 1034],
+                        tooltips:['I\'m Old Gregg!', 'I\'m a scaly manfish!', 'You ever drink Bailey\'s out of a shoe?'],
+                        titleUrl:'https://www.youtube.com/watch?v=4LZo9ugJTWQ',
+                        annotations:['Old Gregg']
+                    });
+                }, 2000);
             });
         </script>
     </body>
