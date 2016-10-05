@@ -26,4 +26,8 @@ gulp.task('min-index', function() {
     .pipe(gulp.dest('dist'));
 });
 
-gulp.task('default', ['scripts', 'min-index']);
+gulp.task('watch', function() {
+    gulp.watch(['js/**/*.js', 'test/index.html'], ['scripts', 'min-index']);
+});
+
+gulp.task('default', ['scripts', 'min-index', 'watch']);
