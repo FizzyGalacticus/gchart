@@ -48,14 +48,21 @@ GChart.onLoad = function(callback) {
     else if(callback) callback();
 };
 
-GChart.prototype.addColumn = function(col) {
+GChart.prototype.addColumn = function(col, triggerChange) {
     this.columns.push(col);
+    this.somethingChanged = (triggerChange !== 'undefined' ? triggerChange:true);
+};
+
+GChart.prototype.addColumns = function(cols) {
+    for(var i = 0; i < cols.length; i++)
+        this.columns.push(cols[i], false);
+
     this.somethingChanged = true;
 };
 
-GChart.prototype.addRow = function(row) {
+GChart.prototype.addRow = function(row, triggerChange) {
     this.rows.push(row);
-    this.somethingChanged = true;
+    this.somethingChanged = (triggerChange !== undefined ? triggerChange:true);
 
     if(this.beenDrawn)
         this.draw();
@@ -63,7 +70,9 @@ GChart.prototype.addRow = function(row) {
 
 GChart.prototype.addRows = function(rows) {
     for(var i = 0; i < rows.length; i++)
-        this.addRow(rows[i]);
+        this.addRow(rows[i], false);
+
+    this.somethingChanged = true;
 };
 
 GChart.prototype.clear = function() {
@@ -106,12 +115,12 @@ GChart.prototype.getRowArray = function(rowIndex) {
         rowArr.push(value);
     }
 
-    for(var i = 0; i < this.tooltipPositions.length; i++) {
-        rowArr.insert(this.tooltipPositions[i], row.tooltips[i]);
+    for(var j = 0; j < this.tooltipPositions.length;j++) {
+        rowArr.insert(this.tooltipPositions[j], row.tooltips[j]);
     }
 
-    for(var i = 0; i < this.annotationPositions.length; i++) {
-        rowArr.insert(this.annotationPositions[i], row.annotations[i]);
+    for(var k = 0; k < this.annotationPositions.length;k++) {
+        rowArr.insert(this.annotationPositions[k], row.annotations[k]);
     }
 
     return rowArr;
