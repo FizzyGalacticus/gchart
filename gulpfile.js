@@ -1,11 +1,14 @@
-var exec = require('child_process').exec,
-    gulp = require('gulp'),
-    uglify = require('gulp-uglify'),
-    concat = require('gulp-concat'),
-    htmlmin = require('gulp-htmlmin');
+var exec         = require('child_process').exec,
+    gulp         = require('gulp'),
+    uglify       = require('gulp-uglify'),
+    concat       = require('gulp-concat'),
+    htmlmin      = require('gulp-htmlmin'),
+    webstandards = require('gulp-webstandards')
+    plumber      = require('gulp-plumber');
 
 gulp.task('scripts', function() {
     gulp.src(['bower_components/**/*.js', 'app/js/**/*.js'])
+    .pipe(plumber())
     .pipe(concat('gchart.min.js'))
     .pipe(uglify())
     .pipe(gulp.dest('dist/js'));
@@ -26,8 +29,13 @@ gulp.task('min-index', function() {
     .pipe(gulp.dest('dist'));
 });
 
-gulp.task('watch', function() {
-    gulp.watch(['app/js/**/*.js', 'app/index.html'], ['scripts', 'min-index']);
+gulp.task('webstandards', function() {
+    gulp.src('dist/**')
+    .pipe(webstandards());
 });
 
-gulp.task('default', ['scripts', 'min-index', 'watch']);
+gulp.task('watch', function() {
+    gulp.watch(['app/js/**/*.js', 'app/index.html'], ['scripts', 'min-index', 'webstandards']);
+});
+
+gulp.task('default', ['scripts', 'min-index', 'webstandards', 'watch']);

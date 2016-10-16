@@ -10,7 +10,9 @@
     "gulp": "^3.9.1",
     "gulp-concat": "^2.6.0",
     "gulp-htmlmin": "^3.0.0",
-    "gulp-uglify": "^2.0.0"
+    "gulp-plumber": "^1.1.0",
+    "gulp-uglify": "^2.0.0",
+    "gulp-webstandards": "^0.1.1"
   },
   "devDependencies": {},
   "scripts": {
