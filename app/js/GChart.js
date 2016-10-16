@@ -19,14 +19,17 @@ GChart = function(divId, type) {
             'maxLines': 2
         }
     };
-    this.beenDrawn = false;
-    this.loaded    = false;
-    var self       = this;
+    this.beenDrawn        = false;
+    this.somethingChanged = false;
+    this.loaded           = false;
+    var self              = this;
     
     this.chart = new google.visualization[this.chartType](document.getElementById(this.divId));
     window.addEventListener('resize', function() {
-        if(self.beenDrawn)
+        if(self.beenDrawn) {
+            self.somethingChanged = true;
             self.draw();
+        }
     });
 };
 
@@ -47,10 +50,12 @@ GChart.onLoad = function(callback) {
 
 GChart.prototype.addColumn = function(col) {
     this.columns.push(col);
+    this.somethingChanged = true;
 };
 
 GChart.prototype.addRow = function(row) {
     this.rows.push(row);
+    this.somethingChanged = true;
 
     if(this.beenDrawn)
         this.draw();
@@ -62,8 +67,9 @@ GChart.prototype.addRows = function(rows) {
 };
 
 GChart.prototype.clear = function() {
-    this.rows    = [];
-    this.columns = [];
+    this.rows             = [];
+    this.columns          = [];
+    this.somethingChanged = true;
 };
 
 GChart.prototype.getColumnArray = function() {
@@ -122,7 +128,7 @@ GChart.prototype.getRowsArray = function() {
 
 GChart.prototype.fadeOut = function() {
     var elem              = document.getElementById(this.divId);
-    var opacity           = (elem.style.opacity == '' ? 1.0:elem.style.opacity);
+    var opacity           = (elem.style.opacity === '' ? 1.0:elem.style.opacity);
     var self              = this;
     var timeoutTime       = 5;
     var opacityDifference = 0.005;
@@ -139,13 +145,16 @@ GChart.prototype.fadeOut = function() {
 };
 
 GChart.prototype.addOption = function(key, value) {
-    this.options[key] = value;
+    this.options[key]     = value;
+    this.somethingChanged = true;
 };
 
 GChart.prototype.addOptions = function(options) {
     var keys = Object.keys(options);
     for(var i = 0; i < keys.length; i++)
         this.options[keys[i]] = options[keys[i]];
+
+    this.somethingChanged = true;
 };
 
 GChart.prototype.addListener = function(name, func, overwrite) {
@@ -156,12 +165,14 @@ GChart.prototype.addListener = function(name, func, overwrite) {
         func:func,
         event:google.visualization.events.addListener(this.chart, name, func)
     };
+    this.somethingChanged = true;
 };
 
 GChart.prototype.removeListener = function(name) {
     if(this.listeners[name]) {
         google.visualization.events.removeListener(this.listeners[name].event);
         delete this.listeners[name];
+        this.somethingChanged = true;
     }
 };
 
@@ -205,29 +216,32 @@ GChart.prototype.createRowTitleLinks = function() {
 };
 
 GChart.prototype.draw = function() {
-    var self  = this;
-    var colArr = this.getColumnArray();
-    var rowsArr = this.getRowsArray();
-    rowsArr.unshift(colArr);
+    if(this.somethingChanged) {
+        var self  = this;
+        var colArr = this.getColumnArray();
+        var rowsArr = this.getRowsArray();
+        rowsArr.unshift(colArr);
 
-    this.data = new google.visualization.arrayToDataTable(rowsArr);
+        this.data = new google.visualization.arrayToDataTable(rowsArr);
 
-    if(this.chartType == 'BarChart' || this.chartType == 'ColumnChart') {
-        this.addListener('animationfinish', function() {
-            var rects = document.getElementsByTagName('rect');
-            for(var i = 0; i < rects.length; i++) {
-                var rect       = rects[i];
-                var rectWidth  = (rect.width.baseVal.value ? rect.width.baseVal.value:100);
-                var rectHeight = (rect.height.baseVal.value ? rect.height.baseVal.value:100);
-                if(rectWidth == 0.5 || rectHeight == 0.5) {
-                    rect.style.display = 'none';
+        if(this.chartType == 'BarChart' || this.chartType == 'ColumnChart') {
+            this.addListener('animationfinish', function() {
+                var rects = document.getElementsByTagName('rect');
+                for(var i = 0; i < rects.length; i++) {
+                    var rect       = rects[i];
+                    var rectWidth  = (rect.width.baseVal.value ? rect.width.baseVal.value:100);
+                    var rectHeight = (rect.height.baseVal.value ? rect.height.baseVal.value:100);
+                    if(rectWidth == 0.5 || rectHeight == 0.5) {
+                        rect.style.display = 'none';
+                    }
                 }
-            }
 
-            window.setTimeout(self.createRowTitleLinks(), 50);
-        });
+                window.setTimeout(self.createRowTitleLinks(), 50);
+            });
+        }
+
+        this.chart.draw(this.data, this.options);
+        this.beenDrawn        = true;
+        this.somethingChanged = false;
     }
-
-    this.chart.draw(this.data, this.options);
-    this.beenDrawn = true;
 };
