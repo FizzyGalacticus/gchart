@@ -1,12 +1,11 @@
-var exec         = require('child_process').exec,
-    gulp         = require('gulp'),
+var gulp         = require('gulp'),
     uglify       = require('gulp-uglify'),
     concat       = require('gulp-concat'),
     htmlmin      = require('gulp-htmlmin'),
-    webstandards = require('gulp-webstandards')
+    webstandards = require('gulp-webstandards'),
     plumber      = require('gulp-plumber');
 
-gulp.task('scripts', function() {
+gulp.task('js', function() {
     gulp.src(['bower_components/**/*.js', 'app/js/**/*.js'])
     .pipe(plumber())
     .pipe(concat('gchart.min.js'))
@@ -14,7 +13,7 @@ gulp.task('scripts', function() {
     .pipe(gulp.dest('dist/js'));
 });
 
-gulp.task('min-index', function() {
+gulp.task('html', function() {
     gulp.src('app/index.html')
     .pipe(htmlmin({
         collapseWhitespace: true,
@@ -29,13 +28,13 @@ gulp.task('min-index', function() {
     .pipe(gulp.dest('dist'));
 });
 
-gulp.task('webstandards', function() {
+gulp.task('all', function() {
     gulp.src('dist/**')
     .pipe(webstandards());
 });
 
 gulp.task('watch', function() {
-    gulp.watch(['app/js/**/*.js', 'app/index.html'], ['scripts', 'min-index', 'webstandards']);
+    gulp.watch(['app/js/**/*.js', 'app/index.html'], ['js', 'html', 'all']);
 });
 
-gulp.task('default', ['scripts', 'min-index', 'webstandards', 'watch']);
+gulp.task('default', ['js', 'html', 'all', 'watch']);
