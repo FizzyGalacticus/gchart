@@ -189,7 +189,7 @@ GChart.prototype.getRowTitleElements = function() {
     var textDivs = [];
     var temp     = document.querySelectorAll('#' + this.divId + ' text');
     for(var i = 0; i < temp.length; i++)
-        textDivs.push(temp[i]);
+        textDivs.push(temp[i].parentElement);
 
     var startingIndex = textDivs.length - this.rows.length;
     if(this.annotationPositions.length > 0)
