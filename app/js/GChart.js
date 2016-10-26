@@ -189,7 +189,7 @@ GChart.prototype.getRowTitleElements = function() {
     var textDivs = [];
     var temp     = document.querySelectorAll('#' + this.divId + ' text');
     for(var i = 0; i < temp.length; i++)
-        textDivs.push(temp[i].parentElement);
+        textDivs.push(temp[i].parentNode);
 
     var startingIndex = textDivs.length - this.rows.length;
     if(this.annotationPositions.length > 0)
@@ -226,8 +226,8 @@ GChart.prototype.createRowTitleLinks = function() {
 
 GChart.prototype.draw = function() {
     if(this.somethingChanged) {
-        var self  = this;
-        var colArr = this.getColumnArray();
+        var self    = this;
+        var colArr  = this.getColumnArray();
         var rowsArr = this.getRowsArray();
         rowsArr.unshift(colArr);
 
