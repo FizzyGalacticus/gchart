@@ -8,6 +8,12 @@ var gulp         = require('gulp'),
 gulp.task('js', function() {
     gulp.src(['bower_components/**/*.js', 'app/js/**/*.js'])
     .pipe(plumber())
+    .pipe(concat('gchart.js'))
+    // .pipe(uglify())
+    .pipe(gulp.dest('dist/js'));
+
+    gulp.src(['dist/**/*.js'])
+    .pipe(plumber())
     .pipe(concat('gchart.min.js'))
     .pipe(uglify())
     .pipe(gulp.dest('dist/js'));
